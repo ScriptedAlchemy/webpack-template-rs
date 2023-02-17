@@ -135,18 +135,26 @@ impl Template {
         }
     }
 
-    pub fn prefix(s: impl ToString, prefix: &str) -> String {
-        let str = s.to_string().trim();
+
+    pub fn prefix(s: String, prefix: &str) -> String {
+        let str = Template::as_string(&s).trim();
         if str.is_empty() {
             return "".to_string();
         }
         let ind = if str.starts_with('\n') { "" } else { prefix };
-        let replace = str.replace("\n", &format!("\n{}", prefix))
-            .replace(&format!("\n{}", prefix), "\n")
-            .insert_str(0, ind);
+        let replace =str.replace("\n", &format!("\n{}", prefix))
+            .replace(&format!("\n{}", prefix), "\n").insert_str(0, ind);
+    
+        replace
 
-       return replace;
+    }
 
+    pub fn as_string<S: AsRef<str>>(str: &S) -> String {
+        if str.as_ref().contains('\n') {
+            str.as_ref().to_string()
+        } else {
+            str.as_ref().to_string()
+        }
     }
 }
 
